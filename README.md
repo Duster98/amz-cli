@@ -159,6 +159,15 @@ not access private data, and does not solve CAPTCHAs. Please use it responsibly:
 Amazon and all related marks are trademarks of Amazon.com, Inc. or its
 affiliates. All product data belongs to its respective owners.
 
+## License
+
+AMZ CLI is licensed under the **Apache License, Version 2.0**. See
+[LICENSE](LICENSE) for the full text, [NOTICE](NOTICE) for the project notice,
+and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for third-party components.
+
+The license applies to the AMZ CLI release artifacts. It does not grant rights
+to Amazon content or trademarks, and it does not override Amazon's terms of use.
+
 ## About this repository
 
 This repository hosts the signed AMZ CLI release artifacts and update feeds. The
