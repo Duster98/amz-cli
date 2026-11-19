@@ -1,21 +1,24 @@
-# Amazon CLI releases
+# AMZ CLI releases
 
-Questo repository contiene esclusivamente artefatti di release e feed di
-aggiornamento firmati per Amazon CLI. Il codice sorgente non è ospitato qui.
+This repository contains only release artifacts and signed update feeds for
+AMZ CLI. The source code is not hosted here.
 
-## Feed aggiornamenti
+## Update feeds
 
 - Linux: `releases/latest/download/linux-x64.json`
 - Windows: `releases/latest/download/win-x64.json`
 
-Ogni feed contiene manifest firmato, firma RSA-PSS/SHA-256 e URL degli asset
-della release. Il client verifica firma e hash prima di applicare un update.
+Each feed contains the signed manifest, RSA-PSS/SHA-256 signature, and the
+download package for that platform. The CLI verifies the signature and every
+file hash before applying an update.
 
 ## Installer
 
-Bootstrap e installer sono nel tag prerelease `installer-stable`.
+Bootstrap scripts and signed installer assets live in the
+`installer-stable` prerelease tag.
 
-## Sicurezza
+## Verification
 
-La chiave privata di firma non è inclusa nel repository né negli asset. La
-chiave pubblica è incorporata nella CLI e verifica soltanto.
+Release manifests are signed with RSA-PSS/SHA-256. The public key is embedded
+in the CLI and can only verify releases; the private signing key is never
+included in this repository or in any artifact.
