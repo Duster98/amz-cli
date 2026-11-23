@@ -1,14 +1,8 @@
-<h1 align="center">AMZ CLI</h1>
+# AMZ CLI
 
-<p align="center">
-  <a href="https://github.com/Duster98/amz-cli/actions/workflows/ci.yml">
-    <img src="https://github.com/Duster98/amz-cli/actions/workflows/ci.yml/badge.svg" alt="CI">
-  </a>
-</p>
+[![CI](https://github.com/Duster98/amz-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Duster98/amz-cli/actions/workflows/ci.yml)
 
-<p align="center">
-  <strong>A local, unofficial CLI and Web UI for Amazon search, product details, and price monitoring.</strong>
-</p>
+**A local, unofficial CLI and Web UI for Amazon search, product details, and price monitoring.**
 
 AMZ CLI runs on your machine, uses no Amazon API and no account, and keeps its
 data local. It reads public product pages, so it works without cookies or login.
