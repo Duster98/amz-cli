@@ -1,0 +1,15 @@
+bin/
+obj/
+publish/
+TestResults/
+*.user
+.env
+.env.*
+*.pem
+*.key
+__pycache__/
+*.pyc
+node_modules/
+dist/
+src/AmazonScraper.Cli/WebAssets/web.zip
+.DS_Store

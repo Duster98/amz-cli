@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <AssemblyName>amz-notify</AssemblyName>
+    <RootNamespace>AmazonScraper.Notifications.Windows</RootNamespace>
+    <Version>3.2.2</Version>
+    <AssemblyTitle>AMZ CLI</AssemblyTitle>
+    <Product>AMZ CLI</Product>
+    <Description>Desktop notifications for AMZ CLI</Description>
+    <Company>AMZ CLI</Company>
+    <ApplicationIcon>../AmazonScraper.Cli/Assets/icon.ico</ApplicationIcon>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" />
+    <PackageReference Include="Spectre.Console" />
+    <PackageReference Include="System.Drawing.Common" />
+  </ItemGroup>
+
+</Project>

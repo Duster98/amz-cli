@@ -54,6 +54,34 @@ Desktop shortcuts.
 The downloaded installer supports `--dir`, `--no-path`, `--dry-run`,
 `--channel beta`, and `--uninstall`.
 
+## Build from source
+
+Requirements: .NET SDK 10 and, for the Web UI, Node.js 20.19+ and npm.
+
+```bash
+git clone https://github.com/Duster98/amz-cli.git
+cd amz-cli
+./web/build.sh
+dotnet build AmazonScraper.slnx -c Release
+dotnet test AmazonScraper.slnx -c Release
+```
+
+On Windows, use `.\web\build.ps1` instead of `./web/build.sh`. The CLI builds
+without the Web UI; `web/build.sh` builds the SPA and embeds it in the
+executable as `WebAssets/web.zip`. The full developer reference is in
+[docs/DEVELOPING.md](docs/DEVELOPING.md).
+
+Repository layout:
+
+```text
+amz-cli/
+├── AmazonScraper.slnx
+├── src/               # Core, CLI, Update, Installer, Windows notifier
+├── tests/             # xUnit tests and fixtures
+├── web/               # React + TypeScript + Vite Web UI
+└── installer/         # published install.sh and install.ps1
+```
+
 ## Quick start
 
 ```bash
@@ -90,10 +118,14 @@ amz-cli web --open
   drop percentages, CSV/JSON/JSONL history, and optional desktop notifications.
 - **Local Web UI**: search, deals, product cards, filters, and persistent state,
   with no browser storage.
+- **Comparison and settings**: compare up to six products with condition and
+  grade, aligned specs, and difference markers; configure appearance, search,
+  delivery, library, and advanced HTTP options.
 - **Signed updates**: the CLI verifies every update manifest and file hash before
   applying it.
-- **English interface**. Amazon-provided marketplace labels and localized
-  product data remain in their original language.
+- **Six-language Web UI**: English, Italian, French, Spanish, German, and
+  Japanese. The CLI is in English; Amazon-provided marketplace labels and
+  localized product data remain in their original language.
 
 ## Monitoring
 
@@ -165,13 +197,16 @@ AMZ CLI is licensed under the **Apache License, Version 2.0**. See
 [LICENSE](LICENSE) for the full text, [NOTICE](NOTICE) for the project notice,
 and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for third-party components.
 
-The license applies to the AMZ CLI release artifacts. It does not grant rights
-to Amazon content or trademarks, and it does not override Amazon's terms of use.
+The license applies to the AMZ CLI code and release artifacts. It does not grant
+rights to Amazon content or trademarks, and it does not override Amazon's terms
+of use.
 
-## About this repository
+## Source code and releases
 
-This repository hosts the signed AMZ CLI release artifacts and update feeds. The
-source code is not hosted here.
+The source code is in this repository, together with the signed release
+artifacts and update feeds. Build instructions are in
+[docs/DEVELOPING.md](docs/DEVELOPING.md).
 
+- Source: <https://github.com/Duster98/amz-cli>
 - Releases: <https://github.com/Duster98/amz-cli/releases>
 - Installer assets: <https://github.com/Duster98/amz-cli/releases/tag/installer-stable>

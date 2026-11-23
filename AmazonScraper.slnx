@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AmazonScraper.Cli/AmazonScraper.Cli.csproj" />
+    <Project Path="src/AmazonScraper.Core/AmazonScraper.Core.csproj" />
+    <Project Path="src/AmazonScraper.Update/AmazonScraper.Update.csproj" />
+    <Project Path="src/AmazonScraper.Installer/AmazonScraper.Installer.csproj" />
+    <Project Path="src/AmazonScraper.Notifications.Windows/AmazonScraper.Notifications.Windows.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AmazonScraper.Core.Tests/AmazonScraper.Core.Tests.csproj" />
+    <Project Path="tests/AmazonScraper.Cli.Tests/AmazonScraper.Cli.Tests.csproj" />
+    <Project Path="tests/AmazonScraper.Update.Tests/AmazonScraper.Update.Tests.csproj" />
+    <Project Path="tests/AmazonScraper.Installer.Tests/AmazonScraper.Installer.Tests.csproj" />
+  </Folder>
+</Solution>

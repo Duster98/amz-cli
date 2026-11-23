@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>amz-cli</AssemblyName>
+    <RootNamespace>AmazonScraper.Cli</RootNamespace>
+    <Version>3.2.2</Version>
+    <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <RuntimeIdentifiers>linux-x64;win-x64;win-arm64</RuntimeIdentifiers>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+    <!-- Partial trim keeps CLI/Core assemblies; JSON reflection is explicitly enabled. -->
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\AmazonScraper.Core\AmazonScraper.Core.csproj" />
+    <ProjectReference Include="..\AmazonScraper.Update\AmazonScraper.Update.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AmazonScraper.Cli.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console" />
+    <PackageReference Include="Spectre.Console.Cli" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Skill/SKILL.md" LogicalName="AmazonScraper.Cli.Skill.SKILL.md" />
+    <None Remove="Skill/SKILL.md" />
+  </ItemGroup>
+
+  <ItemGroup Condition="Exists('WebAssets/web.zip')">
+    <EmbeddedResource Include="WebAssets/web.zip" LogicalName="AmazonScraper.Cli.WebAssets.web.zip" />
+    <None Remove="WebAssets/web.zip" />
+  </ItemGroup>
+
+</Project>
