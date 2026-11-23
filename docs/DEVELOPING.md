@@ -12,11 +12,13 @@ group totals, alerts, and JSONL/CSV saving.
 ## Requirements
 
 - .NET SDK 10
-- Linux x64 or Windows x64 (the self-contained `win-arm64`/`linux-arm64` RIDs are also supported)
+- Linux x64 or Windows x64. The official release artifacts are x64; other
+  self-contained RIDs are not published or tested.
 - **Linux**: `curl-impersonate` command in `PATH` (on Arch:
   `sudo pacman -S curl-impersonate`). All domains use this command.
-- **Windows**: no external dependencies; the publish includes an updated
-  `libcurl-impersonate.dll`.
+- **Windows**: no external dependencies. Official release packages include an
+  updated `libcurl-impersonate.dll`; source builds use the DLL shipped by the
+  `CurlImpersonate.Http` package.
 - **Only needed to build the web UI**: Node.js 20.19+ and npm. Not required at runtime:
   the SPA is embedded in the executable.
 
@@ -1168,7 +1170,8 @@ cross-border work like the other domains. `--domain uk` uses `en-GB`,
 `/-/en-gb/` paths, `i18n-prefs=GBP` cookie, and `£` format; the `/-/en-gb/` warm-up
 is enabled and creates the session needed for search. On Linux requests use the
 system `curl-impersonate` command; on Windows they use `CurlHandler` with the
-updated `libcurl-impersonate.dll` included in the publish. `--domain jp` uses `ja-JP`,
+`libcurl-impersonate.dll` included in the release package (or the one from the
+`CurlImpersonate.Http` package in a source build). `--domain jp` uses `ja-JP`,
 `/-/ja/` paths, `i18n-prefs=JPY` cookie, whole-yen format `￥2,399`, and
 Japanese labels. `--domain es` uses `es-ES`, `/-/es/` paths, `i18n-prefs=EUR`
 cookie, Spanish format `1.930,40 €`, and curl-impersonate with the Firefox147
