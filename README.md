@@ -84,7 +84,7 @@ amz-cli/
 ├── tests/             # xUnit tests and fixtures
 ├── web/               # React + TypeScript + Vite Web UI
 ├── installer/         # published install.sh and install.ps1
-├── docs/              # developer reference
+├── docs/              # developer reference and screenshots
 └── .github/           # CI workflow
 ```
 
@@ -136,6 +136,16 @@ amz-cli web --open
 - **Six-language Web UI**: English, Italian, French, Spanish, German, and
   Japanese. The CLI is in English; Amazon-provided marketplace labels and
   localized product data remain in their original language.
+
+## Screenshots
+
+### Comparison
+
+![Comparison view](docs/screenshots/comparison.png)
+
+### Settings
+
+![Settings view](docs/screenshots/settings.png)
 
 ## Monitoring
 
