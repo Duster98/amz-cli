@@ -1,5 +1,7 @@
 # AMZ CLI
 
+[![CI](https://github.com/Duster98/amz-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Duster98/amz-cli/actions/workflows/ci.yml)
+
 **A local, unofficial CLI and Web UI for Amazon search, product details, and price monitoring.**
 
 AMZ CLI runs on your machine, uses no Amazon API and no account, and keeps its
@@ -36,12 +38,12 @@ Default locations:
 
 | Platform | Installation |
 |---|---|
-| Linux | `~/.local/share/amz-cli` |
+| Linux | `$XDG_DATA_HOME/amz-cli` or `~/.local/share/amz-cli` |
 | Windows | `%LOCALAPPDATA%\Programs\AmzCLI` |
 
-On Linux the installer also creates `~/.local/bin/amz-cli` and an application-menu
-entry. On Windows it adds the folder to the user PATH and creates Start Menu and
-Desktop shortcuts.
+On Linux the installer also creates `amz-cli` in `$XDG_BIN_HOME` (or
+`~/.local/bin`) and an application-menu entry. On Windows it adds the folder to
+the user PATH and creates Start Menu and Desktop shortcuts.
 
 ### Requirements
 
@@ -76,10 +78,14 @@ Repository layout:
 ```text
 amz-cli/
 ├── AmazonScraper.slnx
+├── Directory.Packages.props
+├── global.json
 ├── src/               # Core, CLI, Update, Installer, Windows notifier
 ├── tests/             # xUnit tests and fixtures
 ├── web/               # React + TypeScript + Vite Web UI
-└── installer/         # published install.sh and install.ps1
+├── installer/         # published install.sh and install.ps1
+├── docs/              # developer reference
+└── .github/           # CI workflow
 ```
 
 ## Quick start
@@ -94,8 +100,12 @@ amz-cli search "usb-c hub" --deals --no-ads --pages 2
 # Product details, rating, and reviews
 amz-cli details B07Q6Y5SC7 --rating --reviews
 
-# Compare products
+# Terminal comparison table
 amz-cli details B07Q6Y5SC7 B08N5WRWNW --compare
+
+# Shared comparison (CLI and Web UI)
+amz-cli compare add B07Q6Y5SC7 B08N5WRWNW
+amz-cli compare show
 
 # Today's deals
 amz-cli deals --domain it --deal-type today
@@ -169,6 +179,12 @@ amz-cli self-test
 Updates come from the signed feeds published in this repository. `self-test`
 makes no network requests.
 
+## Contributing
+
+Issues and pull requests are welcome. Build and test instructions are in
+[docs/DEVELOPING.md](docs/DEVELOPING.md); run the test suite before opening a
+pull request. Keep changes focused and add or update tests for behavior changes.
+
 ## Respect for Amazon
 
 AMZ CLI is intended for **personal, low-volume use**. It does not sign in, does
@@ -209,4 +225,5 @@ artifacts and update feeds. Build instructions are in
 
 - Source: <https://github.com/Duster98/amz-cli>
 - Releases: <https://github.com/Duster98/amz-cli/releases>
+- Changelog: <https://github.com/Duster98/amz-cli/blob/main/RELEASE_NOTES.md>
 - Installer assets: <https://github.com/Duster98/amz-cli/releases/tag/installer-stable>
