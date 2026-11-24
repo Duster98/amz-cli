@@ -1,6 +1,7 @@
 import {
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -23,6 +24,7 @@ import { fulfilmentLabel } from '../lib/fulfilment'
 import { Icon, RatingStars, Tag } from './ui'
 import { ReviewLightbox, type ReviewImageLightbox } from './ReviewLightbox'
 import { ProductGallery } from './ProductGallery'
+import { ProductImageViewer } from './ProductImageViewer'
 import { ProductColumns } from './ProductColumns'
 import {
   conditionGradeTone,
@@ -387,9 +389,15 @@ export function ProductView({
   const showSingleVariantIdentity = Boolean(
     singleVariantLabel || detail?.availability,
   )
-  const images = detail
-    ? Array.from(new Set([detail.image, ...(detail.images ?? [])].filter(Boolean)))
-    : []
+  const images = useMemo(
+    () =>
+      detail
+        ? Array.from(
+            new Set([detail.image, ...(detail.images ?? [])].filter(Boolean)),
+          )
+        : [],
+    [detail],
+  )
   const offers = detail?.buying_options ?? null
   const featuredOption =
     offers?.options.find(
@@ -449,6 +457,10 @@ export function ProductView({
   const stageRef = useRef<HTMLDivElement>(null)
   const railRef = useRef<HTMLDivElement>(null)
   const [lightbox, setLightbox] = useState<ReviewImageLightbox | null>(null)
+  const [imageViewer, setImageViewer] = useState<{
+    index: number
+    returnFocus: HTMLElement | null
+  } | null>(null)
   const [reviewDialog, setReviewDialog] = useState<ProductReview | null>(null)
   const [offersOpen, setOffersOpen] = useState(false)
   const lightboxTrigger = useRef<HTMLElement | null>(null)
@@ -458,6 +470,7 @@ export function ProductView({
   useEffect(() => {
     setActiveImage(0)
     setLightbox(null)
+    setImageViewer(null)
     setReviewDialog(null)
     setOffersOpen(false)
   }, [detail?.asin, images.length])
@@ -519,6 +532,13 @@ export function ProductView({
   const openOffers = (trigger: HTMLElement) => {
     offersTrigger.current = trigger
     setOffersOpen(true)
+  }
+
+  const openImageViewer = (index: number, trigger: HTMLElement) => {
+    if (!detail || images.length === 0) {
+      return
+    }
+    setImageViewer({ index, returnFocus: trigger })
   }
 
   return (
@@ -703,6 +723,8 @@ export function ProductView({
               title={detail.title}
               activeIndex={activeImage}
               onSelect={setActiveImage}
+              onOpenImage={openImageViewer}
+              zoomTargetRef={railRef}
             />
 
             <div className="product-rail" ref={railRef}>
@@ -860,6 +882,17 @@ export function ProductView({
           {...lightbox}
           returnFocus={lightboxTrigger.current}
           onClose={() => setLightbox(null)}
+        />
+      ) : null}
+
+      {imageViewer && detail ? (
+        <ProductImageViewer
+          images={images}
+          index={imageViewer.index}
+          title={detail.title}
+          returnFocus={imageViewer.returnFocus}
+          onIndexChange={setActiveImage}
+          onClose={() => setImageViewer(null)}
         />
       ) : null}
     </section>

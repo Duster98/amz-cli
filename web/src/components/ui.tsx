@@ -1,4 +1,9 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import {
+  useEffect,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
 
 export type IconName =
   | 'search'
@@ -7,6 +12,8 @@ export type IconName =
   | 'more'
   | 'plus'
   | 'expand'
+  | 'zoom-in'
+  | 'zoom-out'
   | 'external'
   | 'star'
   | 'sun'
@@ -100,6 +107,22 @@ export function Icon({
           <path d="M20 4l-7 7" />
           <path d="M10 20H4v-6" />
           <path d="M4 20l7-7" />
+        </svg>
+      )
+    case 'zoom-in':
+      return (
+        <svg {...common}>
+          <circle cx="10.5" cy="10.5" r="6.5" />
+          <path d="m15.5 15.5 4.5 4.5" />
+          <path d="M10.5 7.5v6M7.5 10.5h6" />
+        </svg>
+      )
+    case 'zoom-out':
+      return (
+        <svg {...common}>
+          <circle cx="10.5" cy="10.5" r="6.5" />
+          <path d="m15.5 15.5 4.5 4.5" />
+          <path d="M7.5 10.5h6" />
         </svg>
       )
     case 'external':
@@ -377,12 +400,18 @@ export function ProductImage({
   src,
   alt,
   className,
+  style,
   eager = false,
+  onLoad,
+  onError,
 }: {
   src?: string | null
   alt: string
   className?: string
+  style?: CSSProperties
   eager?: boolean
+  onLoad?: () => void
+  onError?: () => void
 }) {
   const [failed, setFailed] = useState(false)
 
@@ -408,12 +437,17 @@ export function ProductImage({
   return (
     <img
       className={className}
+      style={style}
       src={src}
       alt={alt}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
       referrerPolicy="no-referrer"
-      onError={() => setFailed(true)}
+      onLoad={onLoad}
+      onError={() => {
+        setFailed(true)
+        onError?.()
+      }}
     />
   )
 }

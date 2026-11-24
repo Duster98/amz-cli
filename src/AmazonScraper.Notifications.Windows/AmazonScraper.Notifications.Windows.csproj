@@ -8,7 +8,7 @@
     <SelfContained>true</SelfContained>
     <AssemblyName>amz-notify</AssemblyName>
     <RootNamespace>AmazonScraper.Notifications.Windows</RootNamespace>
-    <Version>3.2.6</Version>
+    <Version>3.2.7</Version>
     <AssemblyTitle>AMZ CLI</AssemblyTitle>
     <Product>AMZ CLI</Product>
     <Description>Desktop notifications for AMZ CLI</Description>
