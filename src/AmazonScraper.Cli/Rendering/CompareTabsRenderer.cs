@@ -437,7 +437,7 @@ public static class CompareTabsRenderer
         {
             table.AddColumn(new TableColumn(new Text("Freq.", new Style(Color.Gold1)))
             {
-                Width = 6,
+                Width = 7,
                 NoWrap = true,
             });
         }

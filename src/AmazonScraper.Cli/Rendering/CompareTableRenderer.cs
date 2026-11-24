@@ -62,7 +62,7 @@ public static class CompareTableRenderer
         }
         if (hasFreq)
         {
-            table.AddColumn(new TableColumn(new Text("Freq.", new Style(Color.Gold1))) { Width = 6, NoWrap = true });
+            table.AddColumn(new TableColumn(new Text("Freq.", new Style(Color.Gold1))) { Width = 7, NoWrap = true });
         }
         table.AddColumn(new TableColumn(new Text("Rating", new Style(Color.Yellow))) { Width = 8, NoWrap = true });
         table.AddColumn(new TableColumn(new Text("Reviews", HeaderStyle)) { Width = 9, NoWrap = true });
