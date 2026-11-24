@@ -19,7 +19,7 @@ public static class CompareTabsTsv
             "DeliveryCost\tDeliveryTime\tDeliveryLocation\tDeliveryType\t" +
             "AmazonChoice\tDeal\tCharger\tOffersCount\tLowestOffer\tCondition\t" +
             "LandedTotal\tSpecs\tAmazonDetails\tSafetyWarnings\tError\t" +
-            "Prime\tPrimeDiscount\tPrimeOnly\tUsuallyKept",
+            "Prime\tPrimeDiscount\tPrimeOnly\tUsuallyKept\tFreqReturned",
         };
 
         foreach (var item in items)
@@ -61,7 +61,8 @@ public static class CompareTabsTsv
                 Clean(detail?.Prime?.Price ?? string.Empty),
                 Clean(detail?.Prime?.Discount ?? string.Empty),
                 detail?.Prime is { Only: true } ? "true" : string.Empty,
-                Clean(detail?.UsuallyKept ?? string.Empty)));
+                Clean(detail?.UsuallyKept ?? string.Empty),
+                Clean(detail?.FrequentlyReturned ?? string.Empty)));
         }
 
         return string.Join('\n', lines);

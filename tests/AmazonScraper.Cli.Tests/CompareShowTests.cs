@@ -302,6 +302,39 @@ public class CompareShowTests
         Assert.Contains("I clienti di solito tengono questo articolo.", lines[1]);
     }
 
+    [Fact]
+    public void Diff_and_tsv_include_frequently_returned()
+    {
+        var first = Item(
+            "B000000001",
+            new ProductDetail
+            {
+                Asin = "B000000001",
+                Title = "Mainboard",
+                FrequentlyReturned = "Articolo restituito frequentemente",
+            });
+        var second = Item(
+            "B000000002",
+            new ProductDetail
+            {
+                Asin = "B000000002",
+                Title = "Other",
+            });
+
+        var diff = CompareDiffBuilder.Build([first, second]);
+
+        Assert.Contains(diff.Attributes, item => item.Name == "Frequently returned"
+            && item.Values.SequenceEqual([
+                "Articolo restituito frequentemente",
+                "—",
+            ])
+            && item.Different);
+
+        var lines = CompareTabsTsv.Table([first, second]).Split('\n');
+        Assert.Contains("FreqReturned", lines[0]);
+        Assert.Contains("Articolo restituito frequentemente", lines[1]);
+    }
+
     private static CompareShowItem Item(
         string asin,
         ProductDetail detail) =>

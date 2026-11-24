@@ -775,6 +775,14 @@ function CompareProduct({
               </Tag>
             </span>
           ) : null}
+          {detail.frequently_returned ? (
+            <span title={detail.frequently_returned}>
+              <Tag tone="gold">
+                <Icon name="alert" />
+                {t('product.frequentlyReturned')}
+              </Tag>
+            </span>
+          ) : null}
         </div>
       </div>
 

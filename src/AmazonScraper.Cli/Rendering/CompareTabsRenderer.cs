@@ -310,6 +310,7 @@ public static class CompareTabsRenderer
         var hasChoice = items.Any(item => item.Detail?.AmazonChoice == true);
         var hasDeal = items.Any(item => !string.IsNullOrWhiteSpace(item.Detail?.Deal));
         var hasKept = items.Any(item => !string.IsNullOrWhiteSpace(item.Detail?.UsuallyKept));
+        var hasFreq = items.Any(item => !string.IsNullOrWhiteSpace(item.Detail?.FrequentlyReturned));
         var hasCharger = items.Any(item => item.Detail?.Charger is not null);
         var hasLanded = items.Any(item => item.Detail?.ImportFees is not null);
         var hasError = items.Any(item => item.Error is not null);
@@ -432,6 +433,14 @@ public static class CompareTabsRenderer
                 NoWrap = true,
             });
         }
+        if (hasFreq)
+        {
+            table.AddColumn(new TableColumn(new Text("Freq.", new Style(Color.Gold1)))
+            {
+                Width = 6,
+                NoWrap = true,
+            });
+        }
         if (hasCharger)
         {
             table.AddColumn(new TableColumn(new Text("Charger", HeaderStyle))
@@ -549,6 +558,12 @@ public static class CompareTabsRenderer
                 row.Add(new Text(
                     detail?.UsuallyKept is { Length: > 0 } ? "✓" : "-",
                     new Style(Color.Green)));
+            }
+            if (hasFreq)
+            {
+                row.Add(new Text(
+                    detail?.FrequentlyReturned is { Length: > 0 } ? "!" : "-",
+                    new Style(Color.Gold1)));
             }
             if (hasCharger)
             {
