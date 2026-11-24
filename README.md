@@ -235,5 +235,5 @@ artifacts and update feeds. Build instructions are in
 
 - Source: <https://github.com/Duster98/amz-cli>
 - Releases: <https://github.com/Duster98/amz-cli/releases>
-- Changelog: <https://github.com/Duster98/amz-cli/blob/main/RELEASE_NOTES.md>
+- Release notes: <https://github.com/Duster98/amz-cli/releases>
 - Installer assets: <https://github.com/Duster98/amz-cli/releases/tag/installer-stable>
