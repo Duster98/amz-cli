@@ -58,8 +58,8 @@ The downloaded installer supports `--dir`, `--no-path`, `--dry-run`,
 
 ## Build from source
 
-Requirements: .NET SDK 10, Node.js 20.19+, npm, Python 3 and Bash. Linux also
-needs `curl-impersonate` in `PATH` at runtime.
+Requirements: .NET SDK 10 and Node.js 20.19+ with npm. `compile.sh` also needs
+Bash and Python 3. Linux also needs `curl-impersonate` in `PATH` at runtime.
 
 The quickest way to build runnable executables is:
 
@@ -69,8 +69,14 @@ cd amz-cli
 ./compile.sh
 ```
 
-`compile.sh` builds the Web UI, then creates self-contained executables and
-ZIP archives in `dist/`:
+On Windows PowerShell, use the equivalent script:
+
+```powershell
+.\compile.ps1
+```
+
+Both scripts build the Web UI, then create self-contained executables and ZIP
+archives in `dist/`:
 
 ```text
 dist/linux-x64/amz-cli
@@ -79,19 +85,23 @@ dist/amz-cli-<version>-linux-x64.zip
 dist/amz-cli-<version>-win-x64.zip
 ```
 
-On Windows, run `compile.sh` from Git Bash or WSL. The Windows package also
-contains `amz-notify.exe` and the native curl-impersonate files; the Linux
-executable uses the system `curl-impersonate` command.
+On Windows, `compile.sh` works from Git Bash or WSL; `compile.ps1` is the
+native PowerShell option. The Windows package also contains `amz-notify.exe`
+and the native curl-impersonate files; the Linux executable uses the system
+`curl-impersonate` command.
 
-Useful options:
+Useful options for both scripts:
 
 ```bash
-./compile.sh --help
+./compile.sh --help          # .\compile.ps1 -Help
 ./compile.sh --test          # run the test suite before packaging
 ./compile.sh --rid linux-x64 # build only one target
 ./compile.sh --no-zip        # keep only dist/<rid> folders
 ./compile.sh --no-web        # reuse the existing WebAssets/web.zip
 ```
+
+PowerShell uses the same switches with a leading dash:
+`-Rid`, `-Test`, `-NoZip`, `-NoWeb`.
 
 For development you can still build manually:
 
@@ -113,7 +123,8 @@ amz-cli/
 ├── AmazonScraper.slnx
 ├── Directory.Packages.props
 ├── global.json
-├── compile.sh         # one-command build for Linux and Windows
+├── compile.sh         # one-command build (Linux/macOS/WSL)
+├── compile.ps1        # one-command build (Windows PowerShell)
 ├── src/               # Core, CLI, Update, Installer, Windows notifier
 ├── tests/             # xUnit tests and fixtures
 ├── web/               # React + TypeScript + Vite Web UI

@@ -580,9 +580,10 @@ To update the UI after a change:
 ```
 
 For a one-command build of the Web UI plus the Linux and Windows
-self-contained executables, run `./compile.sh` from the repository root. The
-results, including ZIP archives, are written to `dist/`; `./compile.sh --help`
-lists the available options.
+self-contained executables, run `./compile.sh` (Linux/macOS/WSL) or
+`.\compile.ps1` (Windows PowerShell) from the repository root. The results,
+including ZIP archives, are written to `dist/`; `--help`/`-Help` lists the
+available options.
 
 The full skill for agents is in `src/AmazonScraper.Cli/Skill/SKILL.md`,
 included in the executable. `amz-cli --skill` (or `amz-cli skill`) prints it as
