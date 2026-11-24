@@ -231,6 +231,12 @@ public sealed class ProductCacheConfig
 /// </summary>
 public sealed class ProductCacheStore
 {
+    /// <summary>
+    /// Bump when a parser change makes previously cached payloads unsafe to
+    /// reuse. Entries written by older builds are ignored and fetched again.
+    /// </summary>
+    public const int CurrentSchema = 1;
+
     private static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = false,
@@ -328,6 +334,9 @@ public sealed class ProductCacheStore
         config ??= LoadConfig();
         var document = Read(key);
         if (document?["result"] is not JsonObject
+            || document["cache_schema"] is not JsonValue schemaValue
+            || !schemaValue.TryGetValue<int>(out var schema)
+            || schema != CurrentSchema
             || document["cached_at"]?.GetValue<string>() is not { } cachedAtText
             || !DateTimeOffset.TryParse(cachedAtText, out var cachedAt))
         {
@@ -410,6 +419,7 @@ public sealed class ProductCacheStore
         var temporary = $"{path}.{Guid.NewGuid():N}.tmp";
         var document = new JsonObject
         {
+            ["cache_schema"] = CurrentSchema,
             ["cached_at"] = DateTimeOffset.UtcNow.ToString("O"),
             ["context"] = JsonSerializer.SerializeToNode(
                 context ?? new ProductCacheContext(),

@@ -167,6 +167,86 @@ public class BuyingOptionsParserTests
     }
 
     [Fact]
+    public void Amazon_sold_offer_uses_the_marketplace_retail_seller_id()
+    {
+        const string html = """
+            <input type="hidden" name="" value="1" id="aod-total-offer-count"/>
+            <div id="aod-offer" role="listitem">
+              <div id="aod-offer-heading"><span>Nuovo</span></div>
+              <input type="hidden" name="items[0.base][offerListingId]" value="TEST%2BOFFER"/>
+              <div id="aod-offer-price">
+                <span data-pricetopay-label="{priceToPay}" class="aok-offscreen apex-pricetopay-accessibility-label">1.098,95 €</span>
+              </div>
+              <div id="aod-offer-soldBy">
+                <div class="a-fixed-left-grid">
+                  <div class="a-fixed-left-grid-inner">
+                    <div class="a-fixed-left-grid-col a-col-left">
+                      <span class="a-size-small a-color-tertiary">Venditore</span>
+                    </div>
+                    <div class="a-fixed-left-grid-col a-col-right">
+                      <span class="a-size-small a-color-base"> Amazon </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            """;
+
+        var result = BuyingOptionsParser.Parse(
+            html,
+            ItalyMarketplace.Instance,
+            "B0DSG52H7D");
+
+        Assert.NotNull(result);
+        var option = Assert.Single(result!.Options);
+        Assert.Equal("Amazon", option.Seller);
+        Assert.Equal("A11IL2PNWYJU7H", option.SellerId);
+        Assert.Equal(
+            "https://www.amazon.it/dp/B0DSG52H7D?smid=A11IL2PNWYJU7H&psc=1",
+            option.DetailUrl);
+    }
+
+    [Fact]
+    public void Used_amazon_offer_is_not_mapped_to_the_retail_seller()
+    {
+        const string html = """
+            <input type="hidden" name="" value="1" id="aod-total-offer-count"/>
+            <div id="aod-offer" role="listitem">
+              <div id="aod-offer-heading"><span>Usato - Come nuovo</span></div>
+              <input type="hidden" name="items[0.base][offerListingId]" value="TEST%2BWAREHOUSE"/>
+              <div id="aod-offer-price">
+                <span data-pricetopay-label="{priceToPay}" class="aok-offscreen apex-pricetopay-accessibility-label">999,00 €</span>
+              </div>
+              <div id="aod-offer-soldBy">
+                <div class="a-fixed-left-grid">
+                  <div class="a-fixed-left-grid-inner">
+                    <div class="a-fixed-left-grid-col a-col-left">
+                      <span class="a-size-small a-color-tertiary">Venditore</span>
+                    </div>
+                    <div class="a-fixed-left-grid-col a-col-right">
+                      <span class="a-size-small a-color-base"> Amazon </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            """;
+
+        var result = BuyingOptionsParser.Parse(
+            html,
+            ItalyMarketplace.Instance,
+            "B0DSG52H7D");
+
+        Assert.NotNull(result);
+        var option = Assert.Single(result!.Options);
+        Assert.Equal("used", option.ConditionType);
+        Assert.Equal("", option.SellerId);
+        Assert.Equal(
+            "https://www.amazon.it/dp/B0DSG52H7D",
+            option.DetailUrl);
+    }
+
+    [Fact]
     public void Detail_url_without_seller_id_is_the_product_url()
     {
         const string html = """

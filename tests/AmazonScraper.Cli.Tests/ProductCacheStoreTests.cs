@@ -36,6 +36,9 @@ public class ProductCacheStoreTests
         var cached = cache.Read(key);
         Assert.NotNull(cached);
         Assert.Equal(
+            ProductCacheStore.CurrentSchema,
+            cached!["cache_schema"]!.GetValue<int>());
+        Assert.Equal(
             "ASUS",
             cached!["result"]!["product"]!["title"]!.GetValue<string>());
         Assert.Equal("IT", cached["context"]!["country"]!.GetValue<string>());
@@ -209,6 +212,29 @@ public class ProductCachePolicyTests
             .ToString("O");
         File.WriteAllText(path, document.ToJsonString());
         Assert.Null(cache.ReadFresh(key, requested, cache.LoadConfig()));
+    }
+
+    [Fact]
+    public void Legacy_cache_without_schema_is_not_reused()
+    {
+        using var directory = new TempDirectory();
+        var cache = new ProductCacheStore(
+            Path.Combine(directory.Root, "products"),
+            Path.Combine(directory.Root, "cache-settings.json"));
+        var key = ProductCacheStore.Key("it", "B0H25NG1JK");
+        cache.Save(
+            key,
+            JsonNode.Parse("""{"product":{"asin":"B0H25NG1JK"}}""")!);
+
+        var path = Path.Combine(cache.DirectoryPath, $"{key}.json");
+        var document = JsonNode.Parse(File.ReadAllText(path))!.AsObject();
+        document.Remove("cache_schema");
+        File.WriteAllText(path, document.ToJsonString());
+
+        Assert.Null(cache.ReadFresh(
+            key,
+            new ProductCacheContext(),
+            cache.LoadConfig()));
     }
 
     [Fact]

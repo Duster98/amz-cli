@@ -148,6 +148,13 @@ public static partial class BuyingOptionsParser
         var (shipping, time) = ReadDelivery(block);
         var condition = ExtractCondition(block);
         var conditionInfo = BuyingConditionClassifier.Parse(condition);
+        if (string.IsNullOrEmpty(sellerId)
+            && AmazonRetailSeller.IsName(seller)
+            && (string.IsNullOrEmpty(conditionInfo.ConditionType)
+                || conditionInfo.ConditionType == "new"))
+        {
+            sellerId = marketplace.AmazonSellerId;
+        }
 
         return new BuyingOption
         {

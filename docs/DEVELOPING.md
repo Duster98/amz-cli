@@ -497,8 +497,11 @@ verify it. Stopping a monitor does not disable startup. The API also exposes
 cd web
 ./build.sh          # Windows: .\build.ps1
 
-# Start in the foreground, opening the browser.
+# Build both self-contained executables and ZIP archives.
 cd ..
+./compile.sh
+
+# Start in the foreground, opening the browser.
 dotnet run --project src/AmazonScraper.Cli -- web --open
 
 # App mode: hidden console on Windows, logs to file.
@@ -575,6 +578,11 @@ To update the UI after a change:
 ```bash
 ./web/build.sh
 ```
+
+For a one-command build of the Web UI plus the Linux and Windows
+self-contained executables, run `./compile.sh` from the repository root. The
+results, including ZIP archives, are written to `dist/`; `./compile.sh --help`
+lists the available options.
 
 The full skill for agents is in `src/AmazonScraper.Cli/Skill/SKILL.md`,
 included in the executable. `amz-cli --skill` (or `amz-cli skill`) prints it as
@@ -1869,10 +1877,10 @@ in help.
 
 ```bash
 amz-cli --version
-# amz-cli 3.2.2 (stable, 2026-11-23)
+# amz-cli 3.2.8 (stable, 2026-11-25)
 
 amz-cli --version --short
-# amz-cli 3.2.2
+# amz-cli 3.2.8
 
 amz-cli --version --json
 amz-cli --version --verbose
@@ -2072,7 +2080,7 @@ Backups are associated with the installation directory: `--rollback` and
 signing key is never included in the binary.
 
 **2.26.0** is the first version with the updater; **2.34.0** is the last legacy
-release. **3.2.2** is the current source version; **3.2.1** is the latest
+release. **3.2.8** is the current source version; **3.2.7** is the latest
 published release.
 **2.27.0** introduces the automatic check described below. Versions earlier than 2.26.0
 do not have the `update` command, so they must be installed manually once.

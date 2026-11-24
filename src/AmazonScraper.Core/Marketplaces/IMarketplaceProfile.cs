@@ -105,6 +105,13 @@ public interface IMarketplaceProfile
 
     string? DefaultCookieHeader => null;
 
+    /// <summary>
+    /// Amazon's own retail seller ID for this marketplace. AOD exposes
+    /// Amazon-sold offers as plain text without a seller link, so this ID is
+    /// needed to build a URL that selects the correct offer.
+    /// </summary>
+    string AmazonSellerId => AmazonRetailSeller.IdFor(Id);
+
     string DetailUrl(string asin) =>
         new Uri(BaseUri, $"dp/{asin}").AbsoluteUri;
 

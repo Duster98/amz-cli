@@ -604,6 +604,13 @@ public sealed partial class DetailParser(IMarketplaceProfile marketplace)
             ? condition
             : featuredCondition;
         var conditionInfo = BuyingConditionClassifier.Parse(resolvedCondition);
+        if (string.IsNullOrEmpty(sellerId)
+            && AmazonRetailSeller.IsName(seller)
+            && (string.IsNullOrEmpty(conditionInfo.ConditionType)
+                || conditionInfo.ConditionType == "new"))
+        {
+            sellerId = marketplace.AmazonSellerId;
+        }
         option = new BuyingOption
         {
             OfferListingId = offerListingId,

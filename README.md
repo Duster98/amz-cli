@@ -58,11 +58,44 @@ The downloaded installer supports `--dir`, `--no-path`, `--dry-run`,
 
 ## Build from source
 
-Requirements: .NET SDK 10 and, for the Web UI, Node.js 20.19+ and npm.
+Requirements: .NET SDK 10, Node.js 20.19+, npm, Python 3 and Bash. Linux also
+needs `curl-impersonate` in `PATH` at runtime.
+
+The quickest way to build runnable executables is:
 
 ```bash
 git clone https://github.com/Duster98/amz-cli.git
 cd amz-cli
+./compile.sh
+```
+
+`compile.sh` builds the Web UI, then creates self-contained executables and
+ZIP archives in `dist/`:
+
+```text
+dist/linux-x64/amz-cli
+dist/win-x64/amz-cli.exe
+dist/amz-cli-<version>-linux-x64.zip
+dist/amz-cli-<version>-win-x64.zip
+```
+
+On Windows, run `compile.sh` from Git Bash or WSL. The Windows package also
+contains `amz-notify.exe` and the native curl-impersonate files; the Linux
+executable uses the system `curl-impersonate` command.
+
+Useful options:
+
+```bash
+./compile.sh --help
+./compile.sh --test          # run the test suite before packaging
+./compile.sh --rid linux-x64 # build only one target
+./compile.sh --no-zip        # keep only dist/<rid> folders
+./compile.sh --no-web        # reuse the existing WebAssets/web.zip
+```
+
+For development you can still build manually:
+
+```bash
 ./web/build.sh
 dotnet build AmazonScraper.slnx -c Release
 dotnet test AmazonScraper.slnx -c Release
@@ -80,6 +113,7 @@ amz-cli/
 ├── AmazonScraper.slnx
 ├── Directory.Packages.props
 ├── global.json
+├── compile.sh         # one-command build for Linux and Windows
 ├── src/               # Core, CLI, Update, Installer, Windows notifier
 ├── tests/             # xUnit tests and fixtures
 ├── web/               # React + TypeScript + Vite Web UI
