@@ -1,3 +1,14 @@
+# AMZ CLI 3.2.6
+
+This release includes all 3.2.5 features.
+
+## Comparison return flag
+
+- The comparison now shows the "Frequently returned" warning badge next to the
+  product, with the full Amazon notice in the tooltip.
+- The CLI comparison table adds the `Freq.` column; the TSV adds
+  `FreqReturned`.
+
 # AMZ CLI 3.2.5
 
 This release includes all 3.2.4 features.
@@ -17,8 +28,6 @@ This release includes all 3.2.4 features.
   notice with a green check.
 - The comparison card shows a green "Kept by customers" badge; the CLI exposes
   `usually_kept` in details, JSON, TSV, and the comparison diff.
-- Frequently returned products also show a warning badge in the comparison; the
-  CLI adds the corresponding `FreqReturned` column.
 
 # AMZ CLI 3.2.4
 
