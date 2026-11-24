@@ -720,6 +720,27 @@ function CompareProduct({
             languageLocale,
           )}
         </span>
+        {detail.prime ? (
+          <span className={`compare-prime${detail.prime.only ? ' is-only' : ''}`}>
+            <Tag tone={detail.prime.only ? 'rust' : 'blue'}>
+              {detail.prime.only
+                ? t('product.primeOnly')
+                : t('product.primePrice')}
+            </Tag>
+            {detail.prime.only ? null : (
+              <>
+                <span className="compare-prime-value">
+                  {detail.prime.price}
+                </span>
+                {detail.prime.discount ? (
+                  <span className="compare-prime-discount">
+                    {detail.prime.discount}
+                  </span>
+                ) : null}
+              </>
+            )}
+          </span>
+        ) : null}
         <span className="compare-price-meta">
           {detail.original_price ? (
             <span className="price-original">
@@ -739,24 +760,10 @@ function CompareProduct({
               {t(condition.gradeKey)}
             </Tag>
           ) : null}
-          {detail.prime?.only ? (
-            <Tag tone="rust">{t('product.primeOnly')}</Tag>
-          ) : null}
           {isBestPrice ? (
             <Tag tone="accent">{t('compare.bestPrice')}</Tag>
           ) : null}
         </span>
-        {detail.prime && !detail.prime.only ? (
-          <span className="compare-prime">
-            <Tag tone="blue">{t('product.primePrice')}</Tag>
-            <span className="compare-prime-value">{detail.prime.price}</span>
-            {detail.prime.discount ? (
-              <span className="compare-prime-discount">
-                {detail.prime.discount}
-              </span>
-            ) : null}
-          </span>
-        ) : null}
         {detail.coupon ? (
           <span className="compare-coupon">{detail.coupon}</span>
         ) : null}

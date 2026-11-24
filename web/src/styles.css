@@ -12194,6 +12194,15 @@ html {
   font-size: 9.5px;
 }
 
+.purchase-price .price-prime {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.buybox-price .price-prime {
+  margin: 0;
+}
+
 .product-price-row.is-single .purchase-price {
   justify-items: end;
 }

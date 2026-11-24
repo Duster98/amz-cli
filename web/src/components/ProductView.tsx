@@ -300,11 +300,31 @@ function PriceBlock({
           ) : null}
           <span className="price price-large">{displayPrice}</span>
         </span>
+        {detail.prime ? (
+          <p className={`price-prime${detail.prime.only ? ' is-only' : ''}`}>
+            <Tag tone={detail.prime.only ? 'rust' : 'blue'}>
+              {detail.prime.only
+                ? t('product.primeOnly')
+                : t('product.primePrice')}
+            </Tag>
+            {detail.prime.only ? null : (
+              <>
+                <span className="price-prime-value">
+                  {detail.prime.price}
+                </span>
+                {detail.prime.discount ? (
+                  <span className="price-prime-discount">
+                    {detail.prime.discount}
+                  </span>
+                ) : null}
+              </>
+            )}
+          </p>
+        ) : null}
         {detail.original_price ||
         detail.discount ||
         condition ||
-        gradeKey ||
-        detail.prime?.only ? (
+        gradeKey ? (
           <span className="price-meta">
             {detail.original_price ? (
               <span className="price-original">{detail.original_price}</span>
@@ -314,23 +334,9 @@ function PriceBlock({
               <Tag tone={conditionTone}>{condition}</Tag>
             ) : null}
             {gradeKey ? <Tag tone={gradeTone}>{t(gradeKey)}</Tag> : null}
-            {detail.prime?.only ? (
-              <Tag tone="rust">{t('product.primeOnly')}</Tag>
-            ) : null}
           </span>
         ) : null}
       </div>
-      {detail.prime && !detail.prime.only ? (
-        <p className="price-prime">
-          <Tag tone="blue">{t('product.primePrice')}</Tag>
-          <span className="price-prime-value">{detail.prime.price}</span>
-          {detail.prime.discount ? (
-            <span className="price-prime-discount">
-              {detail.prime.discount}
-            </span>
-          ) : null}
-        </p>
-      ) : null}
       {detail.coupon ? <p className="coupon-line">{detail.coupon}</p> : null}
     </>
   )
