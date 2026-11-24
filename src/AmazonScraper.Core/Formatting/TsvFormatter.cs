@@ -287,6 +287,11 @@ public static class TsvFormatter
             lines.Add($"FreqReturned\t{detail.FrequentlyReturned}");
         }
 
+        if (!string.IsNullOrEmpty(detail.UsuallyKept))
+        {
+            lines.Add($"UsuallyKept\t{detail.UsuallyKept}");
+        }
+
         if (detail.BuyingOptions is { } buyingOptions)
         {
             if (buyingOptions.Count > 0)

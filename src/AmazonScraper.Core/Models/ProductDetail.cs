@@ -73,6 +73,11 @@ public sealed class ProductDetail
     [JsonPropertyOrder(14)]
     public string FrequentlyReturned { get; set; } = string.Empty;
 
+    [JsonPropertyName("usually_kept")]
+    [JsonPropertyOrder(15)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string UsuallyKept { get; set; } = string.Empty;
+
     [JsonPropertyName("images")]
     [JsonPropertyOrder(15)]
     public List<string> Images { get; set; } = [];

@@ -269,6 +269,39 @@ public class CompareShowTests
         Assert.Contains("\t109,99 €\t-17%\ttrue", lines[2]);
     }
 
+    [Fact]
+    public void Diff_and_tsv_include_usually_kept()
+    {
+        var first = Item(
+            "B000000001",
+            new ProductDetail
+            {
+                Asin = "B000000001",
+                Title = "Cube",
+                UsuallyKept = "I clienti di solito tengono questo articolo.",
+            });
+        var second = Item(
+            "B000000002",
+            new ProductDetail
+            {
+                Asin = "B000000002",
+                Title = "Other",
+            });
+
+        var diff = CompareDiffBuilder.Build([first, second]);
+
+        Assert.Contains(diff.Attributes, item => item.Name == "Usually kept"
+            && item.Values.SequenceEqual([
+                "I clienti di solito tengono questo articolo.",
+                "—",
+            ])
+            && item.Different);
+
+        var lines = CompareTabsTsv.Table([first, second]).Split('\n');
+        Assert.Contains("UsuallyKept", lines[0]);
+        Assert.Contains("I clienti di solito tengono questo articolo.", lines[1]);
+    }
+
     private static CompareShowItem Item(
         string asin,
         ProductDetail detail) =>

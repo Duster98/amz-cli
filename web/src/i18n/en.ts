@@ -569,6 +569,7 @@ export const en = {
   'product.shipping': 'Shipping',
   'product.returns': 'Returns',
   'product.frequentlyReturned': 'Frequently returned',
+  'product.usuallyKept': 'Kept by customers',
   'product.charger': 'Charger',
   'product.chargerIncluded': 'Included',
   'product.chargerNotIncluded': 'Charger not included',

@@ -829,6 +829,18 @@ svg {
   color: var(--blue-deep);
 }
 
+.tag-green {
+  border-color: color-mix(in srgb, var(--green) 45%, var(--line));
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.tag-green svg {
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+}
+
 .tag-rust {
   border-color: color-mix(in srgb, var(--rust) 45%, var(--line));
   background: var(--rust-soft);
@@ -12818,6 +12830,20 @@ html {
   color: var(--gold);
 }
 
+.purchase-note-positive {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--green);
+}
+
+.purchase-note-positive svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  margin-top: 1px;
+}
+
 .delivery-dialog-list {
   display: flex;
   flex-direction: column;
@@ -14679,13 +14705,17 @@ html {
   background: var(--accent);
 }
 
-.compare-specs {
+.compare-specs,
+.compare-description,
+.compare-amazon-details {
   margin: 0;
   padding: 10px var(--compare-inset) 4px;
   border-top: 1px solid var(--line);
 }
 
-.compare-specs h3 {
+.compare-specs h3,
+.compare-description h3,
+.compare-amazon-details h3 {
   margin: 0 0 4px;
   color: var(--muted);
   font-family: var(--font-mono);
@@ -14693,6 +14723,17 @@ html {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+.compare-description p {
+  margin: 0 0 8px;
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+
+.compare-description p:last-child {
+  margin-bottom: 0;
 }
 
 .compare-specs dl {

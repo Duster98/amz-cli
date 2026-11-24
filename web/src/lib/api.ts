@@ -889,6 +889,7 @@ export interface ProductDetail {
   coupon: string
   image: string
   frequently_returned: string
+  usually_kept?: string | null
   images: string[]
   description: string[]
   specs: Record<string, string>

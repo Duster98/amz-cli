@@ -65,6 +65,7 @@ public class ParserParityTests
         actual.Remove("safety_warnings");
         actual.Remove("subtitle");
         actual.Remove("model_name");
+        actual.Remove("usually_kept");
         var expected = Fixtures.LoadJson(expectedFile);
 
         Assert.True(JsonNode.DeepEquals(expected, actual), "detail JSON differs from Python golden");

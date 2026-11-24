@@ -1,3 +1,23 @@
+# AMZ CLI 3.2.5
+
+This release includes all 3.2.4 features.
+
+## Comparison sections
+
+- The Specifications, Description, and Amazon details sections now start at
+  the same vertical position in every comparison column. Shorter sections
+  leave blank space so the next section does not move up.
+- All specifications are shown, including the ones that only one product has;
+  a dash marks a missing value. Descriptions and Amazon details are shown in
+  full after the specifications.
+
+## Customer keep notice
+
+- Product details show Amazon's positive "customers usually keep this item"
+  notice with a green check.
+- The comparison card shows a green "Kept by customers" badge; the CLI exposes
+  `usually_kept` in details, JSON, TSV, and the comparison diff.
+
 # AMZ CLI 3.2.4
 
 This release includes all 3.2.3 features.

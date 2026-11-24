@@ -578,6 +578,7 @@ export const fr: Record<TranslationKey, string> = {
   'product.shipping': 'Livraison',
   'product.returns': 'Retours',
   'product.frequentlyReturned': 'Souvent retourné',
+  'product.usuallyKept': 'Gardé par les clients',
   'product.charger': 'Chargeur',
   'product.chargerIncluded': 'Inclus',
   'product.chargerNotIncluded': 'Chargeur non inclus',

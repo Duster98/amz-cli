@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>amz-cli</AssemblyName>
     <RootNamespace>AmazonScraper.Cli</RootNamespace>
-    <Version>3.2.4</Version>
+    <Version>3.2.5</Version>
     <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
     <InvariantGlobalization>true</InvariantGlobalization>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>

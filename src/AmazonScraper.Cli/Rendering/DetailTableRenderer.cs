@@ -266,6 +266,15 @@ public static class DetailTableRenderer
         rows.Add(("Coupon", detail.Coupon));
         rows.Add(("Image", detail.Image));
 
+        if (!string.IsNullOrEmpty(detail.UsuallyKept))
+        {
+            var availabilityIndex = rows.FindIndex(row =>
+                string.Equals(row.Field, "Availability", StringComparison.Ordinal));
+            rows.Insert(
+                availabilityIndex >= 0 ? availabilityIndex + 1 : rows.Count,
+                ("Usually kept", $"✓ {detail.UsuallyKept}"));
+        }
+
         if (!string.IsNullOrEmpty(detail.FrequentlyReturned))
         {
             var availabilityIndex = rows.FindIndex(row =>

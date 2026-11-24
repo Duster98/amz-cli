@@ -35,6 +35,8 @@ public static class CompareTableRenderer
         };
 
         var hasCharger = details.Any(detail => detail.Charger is not null);
+        var hasKept = details.Any(detail =>
+            !string.IsNullOrWhiteSpace(detail.UsuallyKept));
 
         table.AddColumn(new TableColumn(new Text("#", new Style(Color.Grey))) { Width = 3, NoWrap = true });
         table.AddColumn(new TableColumn(new Text("ASIN", new Style(Color.Yellow))) { Width = 12, NoWrap = true });
@@ -51,6 +53,10 @@ public static class CompareTableRenderer
         if (hasChoice)
         {
             table.AddColumn(new TableColumn(new Text("Choice", new Style(Color.Cyan))) { Width = 8, NoWrap = true });
+        }
+        if (hasKept)
+        {
+            table.AddColumn(new TableColumn(new Text("Kept", new Style(Color.Green))) { Width = 6, NoWrap = true });
         }
         table.AddColumn(new TableColumn(new Text("Rating", new Style(Color.Yellow))) { Width = 8, NoWrap = true });
         table.AddColumn(new TableColumn(new Text("Reviews", HeaderStyle)) { Width = 9, NoWrap = true });
@@ -93,6 +99,12 @@ public static class CompareTableRenderer
                 row.Add(new Text(
                     detail.AmazonChoice == true ? "✓" : "-",
                     new Style(Color.Cyan)));
+            }
+            if (hasKept)
+            {
+                row.Add(new Text(
+                    string.IsNullOrWhiteSpace(detail.UsuallyKept) ? "-" : "✓",
+                    new Style(Color.Green)));
             }
             row.Add(new Text(string.IsNullOrEmpty(detail.Rating) ? "-" : detail.Rating, new Style(Color.Yellow)));
             row.Add(new Text(string.IsNullOrEmpty(detail.Reviews) ? "-" : detail.Reviews));

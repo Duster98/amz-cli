@@ -577,6 +577,7 @@ export const it: Record<TranslationKey, string> = {
   'product.shipping': 'Spedizione',
   'product.returns': 'Resi',
   'product.frequentlyReturned': 'Restituito spesso',
+  'product.usuallyKept': 'I clienti lo tengono',
   'product.charger': 'Caricatore',
   'product.chargerIncluded': 'Incluso',
   'product.chargerNotIncluded': 'Caricatore non incluso',

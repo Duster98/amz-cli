@@ -174,6 +174,7 @@ public static class CompareDiffBuilder
         ("Best seller rank", detail => detail.BestSellerRank?.ToString()),
         ("Best seller category", detail => detail.BestSellerCategory),
         ("Frequently returned", detail => detail.FrequentlyReturned),
+        ("Usually kept", detail => detail.UsuallyKept),
         ("Offers count", detail => detail.BuyingOptions?.Count.ToString()),
         ("Lowest offer", detail => detail.BuyingOptions?.LowestPrice),
         ("Condition", detail => FeaturedCondition(detail)),
@@ -308,6 +309,7 @@ public static class CompareTabsRenderer
     {
         var hasChoice = items.Any(item => item.Detail?.AmazonChoice == true);
         var hasDeal = items.Any(item => !string.IsNullOrWhiteSpace(item.Detail?.Deal));
+        var hasKept = items.Any(item => !string.IsNullOrWhiteSpace(item.Detail?.UsuallyKept));
         var hasCharger = items.Any(item => item.Detail?.Charger is not null);
         var hasLanded = items.Any(item => item.Detail?.ImportFees is not null);
         var hasError = items.Any(item => item.Error is not null);
@@ -422,6 +424,14 @@ public static class CompareTabsRenderer
                 NoWrap = true,
             });
         }
+        if (hasKept)
+        {
+            table.AddColumn(new TableColumn(new Text("Kept", new Style(Color.Green)))
+            {
+                Width = 6,
+                NoWrap = true,
+            });
+        }
         if (hasCharger)
         {
             table.AddColumn(new TableColumn(new Text("Charger", HeaderStyle))
@@ -533,6 +543,12 @@ public static class CompareTabsRenderer
                         ? TextCleaner.Clean(deal, 9)
                         : "-",
                     new Style(Color.Magenta)));
+            }
+            if (hasKept)
+            {
+                row.Add(new Text(
+                    detail?.UsuallyKept is { Length: > 0 } ? "✓" : "-",
+                    new Style(Color.Green)));
             }
             if (hasCharger)
             {

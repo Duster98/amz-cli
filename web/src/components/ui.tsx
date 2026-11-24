@@ -326,7 +326,14 @@ export function Icon({
   }
 }
 
-export type TagTone = 'neutral' | 'accent' | 'blue' | 'rust' | 'gold' | 'quiet'
+export type TagTone =
+  | 'neutral'
+  | 'accent'
+  | 'blue'
+  | 'rust'
+  | 'gold'
+  | 'green'
+  | 'quiet'
 
 export function Tag({
   tone = 'neutral',

@@ -532,6 +532,13 @@ export function PurchasePanel({
         meta
       )}
 
+      {detail.usually_kept ? (
+        <p className="purchase-note purchase-note-positive">
+          <Icon name="check" />
+          {detail.usually_kept}
+        </p>
+      ) : null}
+
       {detail.frequently_returned ? (
         <p className="purchase-note purchase-note-warning">
           <span>{t('product.frequentlyReturned')}</span>

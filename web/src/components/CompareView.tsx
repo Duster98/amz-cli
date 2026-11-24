@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -168,6 +169,7 @@ export function CompareView({
   const controllersRef = useRef(new Map<string, AbortController>())
   const previousIdsRef = useRef<Set<string>>(new Set())
   const initializedRef = useRef(false)
+  const boardRef = useRef<HTMLDivElement | null>(null)
   const [confirmClear, setConfirmClear] = useState(false)
 
   const updateProduct = useCallback(
@@ -333,6 +335,75 @@ export function CompareView({
     })
   }, [activeId])
 
+  useLayoutEffect(() => {
+    const board = boardRef.current
+    if (!board) {
+      return
+    }
+
+    const sectionSelector =
+      '.compare-specs, .compare-description, .compare-amazon-details'
+    const sectionSelectors = [
+      '.compare-specs',
+      '.compare-description',
+      '.compare-amazon-details',
+    ]
+
+    const alignSections = () => {
+      const sections = Array.from(
+        board.querySelectorAll<HTMLElement>(sectionSelector),
+      )
+      for (const section of sections) {
+        section.style.marginTop = ''
+      }
+      if (!window.matchMedia('(min-width: 821px)').matches) {
+        return
+      }
+      for (const selector of sectionSelectors) {
+        const group = sections.filter((section) =>
+          section.matches(selector),
+        )
+        if (group.length < 2) {
+          continue
+        }
+        const tops = group.map((section) => {
+          const card = section.closest('.compare-column') as HTMLElement | null
+          if (!card) {
+            return 0
+          }
+          return section.getBoundingClientRect().top
+            - card.getBoundingClientRect().top
+        })
+        const highest = Math.max(...tops)
+        group.forEach((section, index) => {
+          const gap = highest - tops[index]
+          if (gap > 0.5) {
+            section.style.marginTop = `${gap}px`
+          }
+        })
+      }
+    }
+
+    let frame = window.requestAnimationFrame(alignSections)
+    const timeout = window.setTimeout(alignSections, 300)
+    const onResize = () => {
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(alignSections)
+    }
+    window.addEventListener('resize', onResize)
+    void document.fonts?.ready.then(alignSections).catch(() => {})
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(timeout)
+      window.removeEventListener('resize', onResize)
+      for (const section of board.querySelectorAll<HTMLElement>(
+        sectionSelector,
+      )) {
+        section.style.marginTop = ''
+      }
+    }
+  }, [products, compare.items])
+
   const loaded = compare.items
     .map((item) => ({
       item,
@@ -391,7 +462,6 @@ export function CompareView({
     return [...counts.entries()]
       .sort((left, right) =>
         right[1] - left[1] || left[0].localeCompare(right[0]))
-      .slice(0, 8)
       .map(([key]) => key)
   }, [loaded])
 
@@ -524,6 +594,7 @@ export function CompareView({
               compare.items.length,
               3,
             )}`}
+            ref={boardRef}
           >
             {compare.items.map((item) => {
               const state = products[item.id]
@@ -676,6 +747,7 @@ function CompareProduct({
     && data.price_amount === bestPrice
   const delivery = deliveryText(detail) || '—'
   const condition = offerCondition(detail, t)
+  const description = detail.description.filter((paragraph) => paragraph.trim())
   const cacheTone = data.stale
     ? 'is-stale'
     : data.cached
@@ -694,6 +766,14 @@ function CompareProduct({
           ) : null}
           {detail.deal ? (
             <Tag tone="accent">{detail.deal}</Tag>
+          ) : null}
+          {detail.usually_kept ? (
+            <span title={detail.usually_kept}>
+              <Tag tone="green">
+                <Icon name="check" />
+                {t('product.usuallyKept')}
+              </Tag>
+            </span>
           ) : null}
         </div>
       </div>
@@ -835,6 +915,29 @@ function CompareProduct({
                   ) : null}
                 </dt>
                 <dd>{detail.specs?.[key]?.trim() || '—'}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
+
+      {description.length > 0 ? (
+        <section className="compare-description">
+          <h3>{t('product.description')}</h3>
+          {description.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </section>
+      ) : null}
+
+      {detail.amazon_details && detail.amazon_details.length > 0 ? (
+        <section className="compare-amazon-details">
+          <h3>{t('product.amazonDetails')}</h3>
+          <dl>
+            {detail.amazon_details.map((item, index) => (
+              <div className="compare-spec-row" key={`${item.name}-${index}`}>
+                <dt>{item.name}</dt>
+                <dd>{item.value || '—'}</dd>
               </div>
             ))}
           </dl>

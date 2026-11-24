@@ -461,6 +461,8 @@ public sealed partial class DetailParser(IMarketplaceProfile marketplace)
             }
         }
 
+        var usuallyKept = ExtractUsuallyKept(html);
+
         var bestSeller = ProductBadgesParser.ParseBestSeller(html, marketplace);
         var variants = ProductVariantsParser.Parse(html, asin, marketplace);
         var buyingOptions = BuyingOptionsSummaryParser.Parse(html, marketplace);
@@ -500,6 +502,7 @@ public sealed partial class DetailParser(IMarketplaceProfile marketplace)
             Coupon = coupon,
             Image = image,
             FrequentlyReturned = frequentlyReturned,
+            UsuallyKept = usuallyKept,
             Variants = variants,
             Images = images,
             Description = description,
@@ -705,6 +708,27 @@ public sealed partial class DetailParser(IMarketplaceProfile marketplace)
             @"[?&](?:seller|smid)=([A-Za-z0-9]+)",
             RegexOptions.IgnoreCase);
         return seller.Success ? seller.Groups[1].Value : string.Empty;
+    }
+
+    private static string ExtractUsuallyKept(string html)
+    {
+        var block = HtmlBlockExtractor.ExtractDivById(
+            html,
+            "buyingOptionRipersInlineBadge_feature_div");
+        if (string.IsNullOrEmpty(block)
+            || !block.Contains("a-alert-success", StringComparison.OrdinalIgnoreCase)
+            || !block.Contains("ripers-lrr-badge", StringComparison.OrdinalIgnoreCase))
+        {
+            return string.Empty;
+        }
+
+        var match = Regex.Match(
+            block,
+            @"<p[^>]*>\s*<span[^>]*>([\s\S]*?)</span>",
+            RegexOptions.IgnoreCase);
+        return match.Success
+            ? HtmlText.Clean(match.Groups[1].Value)
+            : string.Empty;
     }
 
     private static (string? Standard, string? Prime) FindBuyboxPriceBlocks(

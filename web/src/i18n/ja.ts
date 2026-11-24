@@ -573,6 +573,7 @@ export const ja: Record<TranslationKey, string> = {
   'product.shipping': '配送',
   'product.returns': '返品',
   'product.frequentlyReturned': '返品が多い商品',
+  'product.usuallyKept': 'お客様に長く使われています',
   'product.charger': '充電器',
   'product.chargerIncluded': '付属',
   'product.chargerNotIncluded': '充電器は付属していません',

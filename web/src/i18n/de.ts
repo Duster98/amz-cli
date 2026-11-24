@@ -578,6 +578,7 @@ export const de: Record<TranslationKey, string> = {
   'product.shipping': 'Versand',
   'product.returns': 'Rücksendungen',
   'product.frequentlyReturned': 'Häufig zurückgesendet',
+  'product.usuallyKept': 'Von Kunden behalten',
   'product.charger': 'Ladegerät',
   'product.chargerIncluded': 'Enthalten',
   'product.chargerNotIncluded': 'Ladegerät nicht enthalten',
