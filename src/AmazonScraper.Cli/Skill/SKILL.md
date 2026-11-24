@@ -461,6 +461,12 @@ when you use `--country`/`--cap`.
   "price": "129,95 €",
   "original_price": "136,99 €",
   "discount": "-5%",
+  "prime": {
+    "price": "119,95 €",
+    "original_price": "129,95 €",
+    "discount": "-8%",
+    "only": false
+  },
   "deal": "Offerta a tempo",
   "deal_id": "amzn1.deal.86ef82ae",
   "deal_ends_text": "Questa offerta termina il 18 novembre 2026",
@@ -571,6 +577,9 @@ when you use `--country`/`--cap`.
   }
 }
 ```
+
+`prime` is present only when Amazon shows a Prime-only price. The main `price`
+is the standard offer; `prime.only` is true when no regular offer exists.
 
 `delivery` is omitted if Amazon does not expose the block. It includes `cutoff`
 and, when Amazon shows multiple alternatives, `options` with the type, cost,

@@ -26,7 +26,7 @@ public class MonitorCsvTests
         Assert.Contains("\"Prodotto, con virgola\"", row);
         Assert.Contains("\"28,99 €\"", row);
         Assert.Contains("max_price|drop_percent:original", row);
-        Assert.EndsWith(",", row);
+        Assert.EndsWith(",,,false", row);
     }
 
     [Fact]
@@ -52,8 +52,33 @@ public class MonitorCsvTests
         Assert.Contains("amzn1.deal.86ef82ae", row);
         Assert.Contains("Questa offerta termina il 18 novembre 2026", row);
         Assert.Contains("2026-11-18", row);
-        Assert.EndsWith(",2,true", row);
+        Assert.EndsWith(",2,true,,,false", row);
         Assert.Contains("deal_ends_on", MonitorCsv.ItemHeader);
+    }
+
+    [Fact]
+    public void Item_row_includes_prime_fields()
+    {
+        var item = new MonitorItemObservation
+        {
+            ObservedAt = "2026-11-15T10:00:00.000Z",
+            RunId = "run",
+            Cycle = 1,
+            Domain = "it",
+            Asin = "B000000001",
+            Price = "149,99 €",
+            PriceAmount = 149.99m,
+            PrimePrice = "129,99 €",
+            PrimePriceAmount = 129.99m,
+            PrimeOnly = true,
+        };
+
+        var row = MonitorCsv.FormatItem(item);
+
+        Assert.Contains("\"129,99 €\"", row);
+        Assert.EndsWith(",129.99,true", row);
+        Assert.Contains("prime_price", MonitorCsv.ItemHeader);
+        Assert.Contains("prime_only", MonitorCsv.ItemHeader);
     }
 
     [Fact]

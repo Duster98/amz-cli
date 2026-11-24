@@ -55,6 +55,18 @@ public sealed class MonitorItemObservation
     [JsonPropertyName("discount")]
     public string Discount { get; set; } = string.Empty;
 
+    [JsonPropertyName("prime_price")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public string PrimePrice { get; set; } = string.Empty;
+
+    [JsonPropertyName("prime_price_amount")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public decimal? PrimePriceAmount { get; set; }
+
+    [JsonPropertyName("prime_only")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool PrimeOnly { get; set; }
+
     [JsonPropertyName("coupon")]
     public string Coupon { get; set; } = string.Empty;
 

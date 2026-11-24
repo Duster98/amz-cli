@@ -28,6 +28,15 @@ public sealed class ProductDetail
     [JsonPropertyOrder(5)]
     public string Discount { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Prime price shown separately from the standard offer. Null when the
+    /// page has no Prime-only price.
+    /// </summary>
+    [JsonPropertyName("prime")]
+    [JsonPropertyOrder(6)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public PrimePricing? Prime { get; set; }
+
     [JsonPropertyName("rating")]
     [JsonPropertyOrder(6)]
     public string Rating { get; set; } = string.Empty;

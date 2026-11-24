@@ -1543,6 +1543,9 @@ public static class WebHostFactory
         var priceAmount = PriceParser.TryParse(
             result.Product.Price,
             marketplace.Format);
+        var primePriceAmount = result.Product.Prime is { } prime
+            ? PriceParser.TryParse(prime.Price, marketplace.Format)
+            : null;
         var node = new JsonObject
         {
             ["marketplace"] = new JsonObject
@@ -1563,6 +1566,10 @@ public static class WebHostFactory
         if (priceAmount is { } amount)
         {
             node["price_amount"] = amount;
+        }
+        if (primePriceAmount is { } primeAmount)
+        {
+            node["prime_price_amount"] = primeAmount;
         }
         var warnings = new JsonArray();
         foreach (var warning in result.Warnings)

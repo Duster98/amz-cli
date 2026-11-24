@@ -16,6 +16,9 @@ public static class MonitorObservationFactory
         var profile = MarketplaceRegistry.Resolve(plan.Target.Domain);
         var priceAmount = ParsePrice(profile, detail.Price);
         var originalAmount = ParsePrice(profile, detail.OriginalPrice);
+        var primeAmount = detail.Prime is { } prime
+            ? ParsePrice(profile, prime.Price)
+            : null;
 
         return new MonitorItemObservation
         {
@@ -36,6 +39,9 @@ public static class MonitorObservationFactory
             OriginalPrice = detail.OriginalPrice,
             OriginalPriceAmount = originalAmount,
             Discount = detail.Discount,
+            PrimePrice = detail.Prime?.Price ?? string.Empty,
+            PrimePriceAmount = primeAmount,
+            PrimeOnly = detail.Prime?.Only ?? false,
             Coupon = detail.Coupon,
             Deal = detail.Deal,
             DealId = detail.DealId,

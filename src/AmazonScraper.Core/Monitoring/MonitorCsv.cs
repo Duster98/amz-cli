@@ -8,7 +8,8 @@ public static class MonitorCsv
         "schema_version,record_type,observed_at,run_id,cycle,domain,asin,group_id,label,url,title," +
         "price,price_amount,currency,original_price,original_price_amount,discount,coupon,deal," +
         "availability,seller,shipped_by,rating,reviews,triggered_rules,error," +
-        "deal_id,deal_ends_text,deal_ends_on,deal_ends_in_days,deal_has_countdown";
+        "deal_id,deal_ends_text,deal_ends_on,deal_ends_in_days,deal_has_countdown," +
+        "prime_price,prime_price_amount,prime_only";
 
     public const string GroupHeader =
         "schema_version,record_type,observed_at,run_id,cycle,group_id,name,domains,currency," +
@@ -53,6 +54,9 @@ public static class MonitorCsv
             observation.DealEndsOn,
             FormatNullable(observation.DealEndsInDays),
             FormatNullable(observation.DealHasCountdown),
+            observation.PrimePrice,
+            FormatDecimal(observation.PrimePriceAmount),
+            observation.PrimeOnly ? "true" : "false",
         };
 
         return Join(fields);

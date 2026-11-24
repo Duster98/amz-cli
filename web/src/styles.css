@@ -12168,6 +12168,32 @@ html {
   font-size: 12px;
 }
 
+.price-prime {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.price-prime .tag {
+  padding: 2px 5px;
+  font-size: 9.5px;
+}
+
+.price-prime-value {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.price-prime-discount {
+  color: var(--accent-deep);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+}
+
 .product-price-row.is-single .purchase-price {
   justify-items: end;
 }
@@ -14564,6 +14590,31 @@ html {
   flex-wrap: wrap;
   gap: 5px;
   min-height: 21px;
+}
+
+.compare-prime {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 10.5px;
+  line-height: 1.35;
+}
+
+.compare-prime .tag {
+  padding: 1px 5px;
+  font-size: 9px;
+}
+
+.compare-prime-value {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.compare-prime-discount {
+  color: var(--accent-deep);
+  font-family: var(--font-mono);
+  font-size: 9px;
 }
 
 .compare-coupon {

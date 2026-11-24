@@ -126,4 +126,109 @@ public class DetailPriceTests
 
         Assert.Equal("19,99 €", detail.Price);
     }
+
+    [Fact]
+    public void Italy_prime_savings_uses_standard_price_and_exposes_prime()
+    {
+        const string html = """
+            <div id="corePriceDisplay_desktop_feature_div">
+              <span class="a-price a-text-price" data-a-strike="true">
+                <span class="a-offscreen">149,99 €</span>
+              </span>
+              <span class="a-price">
+                <span class="a-offscreen">129,99 €</span>
+                <span aria-hidden="true">
+                  <span class="a-price-whole">129<span class="a-price-decimal">,</span></span>
+                  <span class="a-price-fraction">99</span>
+                  <span class="a-price-symbol">€</span>
+                </span>
+              </span>
+              <span class="savingsPercentage">-13%</span>
+            </div>
+            <div id="desktop_buybox">
+              <div id="primeSavingsUpsellAccordionRow"
+                   data-a-accordion-row-name="primeSavingsUpsellAccordionRow">
+                <span class="a-size-base a-text-bold">Prezzo per cliente Prime</span>
+                <div id="corePrice_feature_div">
+                  <span class="a-price">
+                    <span class="a-offscreen">129,99 €</span>
+                    <span aria-hidden="true">
+                      <span class="a-price-whole">129<span class="a-price-decimal">,</span></span>
+                      <span class="a-price-fraction">99</span>
+                      <span class="a-price-symbol">€</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div id="newAccordionRow_1"
+                   data-a-accordion-row-name="newAccordionRow">
+                <div id="corePrice_feature_div">
+                  <span class="a-price">
+                    <span class="a-offscreen">149,99 €</span>
+                    <span aria-hidden="true">
+                      <span class="a-price-whole">149<span class="a-price-decimal">,</span></span>
+                      <span class="a-price-fraction">99</span>
+                      <span class="a-price-symbol">€</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            """;
+
+        var detail = new DetailParser(ItalyMarketplace.Instance).Parse(html, "B0H7MTVZ32");
+
+        Assert.Equal("149,99 €", detail.Price);
+        Assert.Empty(detail.OriginalPrice);
+        Assert.Empty(detail.Discount);
+        Assert.NotNull(detail.Prime);
+        Assert.Equal("129,99 €", detail.Prime!.Price);
+        Assert.Equal("149,99 €", detail.Prime.OriginalPrice);
+        Assert.Equal("-13%", detail.Prime.Discount);
+        Assert.False(detail.Prime.Only);
+    }
+
+    [Fact]
+    public void Italy_prime_only_offer_uses_prime_price_and_marks_it()
+    {
+        const string html = """
+            <div id="corePriceDisplay_desktop_feature_div">
+              <span class="a-price a-text-price" data-a-strike="true">
+                <span class="a-offscreen">109,99 €</span>
+              </span>
+              <span class="a-price">
+                <span class="a-offscreen">109,99 €</span>
+                <span aria-hidden="true">
+                  <span class="a-price-whole">109<span class="a-price-decimal">,</span></span>
+                  <span class="a-price-fraction">99</span>
+                  <span class="a-price-symbol">€</span>
+                </span>
+              </span>
+              <span class="savingsPercentage">-17%</span>
+            </div>
+            <div id="desktop_buybox">
+              <div id="primeSavingsUpsellAccordionRow"
+                   data-a-accordion-row-name="primeSavingsUpsellAccordionRow">
+                <div id="corePrice_feature_div">
+                  <span class="a-price">
+                    <span class="a-offscreen">109,99 €</span>
+                    <span aria-hidden="true">
+                      <span class="a-price-whole">109<span class="a-price-decimal">,</span></span>
+                      <span class="a-price-fraction">99</span>
+                      <span class="a-price-symbol">€</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            """;
+
+        var detail = new DetailParser(ItalyMarketplace.Instance).Parse(html, "B0H71FFLXB");
+
+        Assert.Equal("109,99 €", detail.Price);
+        Assert.NotNull(detail.Prime);
+        Assert.Equal("109,99 €", detail.Prime!.Price);
+        Assert.True(detail.Prime.Only);
+        Assert.Equal("-17%", detail.Prime.Discount);
+    }
 }

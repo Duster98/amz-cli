@@ -205,6 +205,7 @@ function BuyBoxPrice({
   const hasMeta =
     Boolean(condition) ||
     Boolean(gradeKey) ||
+    Boolean(detail.prime?.only) ||
     (!priceUnavailable &&
       (Boolean(detail.original_price) || Boolean(detail.discount)))
   const compact = priceUnavailable || displayPrice.length > 16
@@ -235,7 +236,21 @@ function BuyBoxPrice({
           ) : null}
           {condition ? <Tag tone={conditionTone}>{condition}</Tag> : null}
           {gradeKey ? <Tag tone={gradeTone}>{t(gradeKey)}</Tag> : null}
+          {detail.prime?.only ? (
+            <Tag tone="rust">{t('product.primeOnly')}</Tag>
+          ) : null}
         </span>
+      ) : null}
+      {detail.prime && !detail.prime.only ? (
+        <p className="price-prime">
+          <Tag tone="blue">{t('product.primePrice')}</Tag>
+          <span className="price-prime-value">{detail.prime.price}</span>
+          {detail.prime.discount ? (
+            <span className="price-prime-discount">
+              {detail.prime.discount}
+            </span>
+          ) : null}
+        </p>
       ) : null}
     </div>
   )

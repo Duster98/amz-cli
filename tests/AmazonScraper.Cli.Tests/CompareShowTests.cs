@@ -221,6 +221,54 @@ public class CompareShowTests
         Assert.True(condition.Different);
     }
 
+    [Fact]
+    public void Diff_and_tsv_include_prime_pricing()
+    {
+        var first = Item(
+            "B000000001",
+            new ProductDetail
+            {
+                Asin = "B000000001",
+                Title = "Keyboard A",
+                Price = "149,99 €",
+                Prime = new PrimePricing
+                {
+                    Price = "129,99 €",
+                    OriginalPrice = "149,99 €",
+                    Discount = "-13%",
+                },
+            });
+        var second = Item(
+            "B000000002",
+            new ProductDetail
+            {
+                Asin = "B000000002",
+                Title = "Keyboard B",
+                Price = "132,99 €",
+                Prime = new PrimePricing
+                {
+                    Price = "109,99 €",
+                    OriginalPrice = "132,99 €",
+                    Discount = "-17%",
+                    Only = true,
+                },
+            });
+
+        var diff = CompareDiffBuilder.Build([first, second]);
+
+        Assert.Contains(diff.Attributes, item => item.Name == "Prime price"
+            && item.Values.SequenceEqual(["129,99 €", "109,99 €"])
+            && item.Different);
+        Assert.Contains(diff.Attributes, item => item.Name == "Prime only"
+            && item.Values.SequenceEqual(["No", "Yes"])
+            && item.Different);
+
+        var lines = CompareTabsTsv.Table([first, second]).Split('\n');
+        Assert.Contains("Prime\tPrimeDiscount\tPrimeOnly", lines[0]);
+        Assert.Contains("129,99 €\t-13%", lines[1]);
+        Assert.Contains("\t109,99 €\t-17%\ttrue", lines[2]);
+    }
+
     private static CompareShowItem Item(
         string asin,
         ProductDetail detail) =>

@@ -1,3 +1,18 @@
+# AMZ CLI 3.2.3
+
+This release includes all 3.2.2 features and fixes Prime-only pricing.
+
+## Prime prices
+
+- When Amazon shows a price reserved for Prime customers, the main `price` is
+  now the standard offer; the Prime price appears separately with its original
+  price and discount (for example "Prime price 129,99 € -13%").
+- Products with only a Prime offer are marked "Prime only" and excluded from
+  the comparison's regular best-price calculation.
+- `details`, `compare show` and the Web product/comparison views expose the
+  Prime price; `--json` adds a nested `prime` object and monitors record
+  `prime_price`, `prime_price_amount`, and `prime_only`.
+
 # AMZ CLI 3.2.2
 
 This release includes all 3.2.1 features and adds the changes below.

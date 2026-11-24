@@ -122,7 +122,7 @@ amz-cli web --open
 - **Search** across Amazon with filters, pagination, deals, delivery estimates,
   sponsored-result exclusion, and JSON/TSV output.
 - **Product details**: price, coupons, availability, seller, shipping, variants,
-  buying options, rating, and reviews.
+  buying options, Prime prices shown separately, rating, and reviews.
 - **Multiple marketplaces**: `it`, `de`, `fr`, `uk`, `com`/`us`, `jp`, and `es`.
 - **Price monitoring**: timer or adaptive budget, groups, price thresholds,
   drop percentages, CSV/JSON/JSONL history, and optional desktop notifications.

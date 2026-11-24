@@ -345,7 +345,8 @@ export function CompareView({
   const sameCurrency =
     new Set(loaded.map((entry) => entry.data.currency)).size <= 1
   const priced = loaded.filter(
-    (entry) => entry.data.price_amount != null,
+    (entry) => entry.data.price_amount != null
+      && !entry.data.product.prime?.only,
   )
   const bestPrice =
     sameCurrency && priced.length > 1
@@ -738,10 +739,24 @@ function CompareProduct({
               {t(condition.gradeKey)}
             </Tag>
           ) : null}
+          {detail.prime?.only ? (
+            <Tag tone="rust">{t('product.primeOnly')}</Tag>
+          ) : null}
           {isBestPrice ? (
             <Tag tone="accent">{t('compare.bestPrice')}</Tag>
           ) : null}
         </span>
+        {detail.prime && !detail.prime.only ? (
+          <span className="compare-prime">
+            <Tag tone="blue">{t('product.primePrice')}</Tag>
+            <span className="compare-prime-value">{detail.prime.price}</span>
+            {detail.prime.discount ? (
+              <span className="compare-prime-discount">
+                {detail.prime.discount}
+              </span>
+            ) : null}
+          </span>
+        ) : null}
         {detail.coupon ? (
           <span className="compare-coupon">{detail.coupon}</span>
         ) : null}

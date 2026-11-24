@@ -555,6 +555,8 @@ export const ja: Record<TranslationKey, string> = {
   'product.deliveryOptionCount': '{count} 件のオプション',
   'product.imageN': '画像 {index}',
   'product.condition': '状態',
+  'product.primePrice': 'Prime 価格',
+  'product.primeOnly': 'Prime 限定',
   'product.price': '価格',
   'product.from': 'から',
   'product.brand': 'ブランド',

@@ -846,6 +846,13 @@ export interface ProductDetailExtra {
   value: string
 }
 
+export interface PrimePricing {
+  price: string
+  original_price: string
+  discount: string
+  only: boolean
+}
+
 export interface ChargerInfo {
   included?: boolean | null
   label?: string | null
@@ -866,6 +873,7 @@ export interface ProductDetail {
   price: string
   original_price: string
   discount: string
+  prime?: PrimePricing | null
   deal?: string | null
   deal_id?: string | null
   deal_ends_text?: string | null
@@ -907,6 +915,7 @@ export interface ProductResponse {
   }
   product: ProductDetail
   price_amount?: number | null
+  prime_price_amount?: number | null
   price_is_from?: boolean
   currency: string
   warnings?: string[]

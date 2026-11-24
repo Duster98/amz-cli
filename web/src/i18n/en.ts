@@ -551,6 +551,8 @@ export const en = {
   'product.deliveryOptionCount': '{count} options',
   'product.imageN': 'Image {index}',
   'product.condition': 'Condition',
+  'product.primePrice': 'Prime price',
+  'product.primeOnly': 'Prime only',
   'product.price': 'Price',
   'product.from': 'from',
   'product.brand': 'Brand',

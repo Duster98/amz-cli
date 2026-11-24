@@ -560,6 +560,8 @@ export const de: Record<TranslationKey, string> = {
   'product.deliveryOptionCount': '{count} Optionen',
   'product.imageN': 'Bild {index}',
   'product.condition': 'Zustand',
+  'product.primePrice': 'Prime-Preis',
+  'product.primeOnly': 'Nur Prime',
   'product.price': 'Preis',
   'product.from': 'ab',
   'product.brand': 'Marke',

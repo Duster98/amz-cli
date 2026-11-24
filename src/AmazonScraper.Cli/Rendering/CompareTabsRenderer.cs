@@ -138,6 +138,12 @@ public static class CompareDiffBuilder
         ("Price", detail => detail.Price),
         ("Original price", detail => detail.OriginalPrice),
         ("Discount", detail => detail.Discount),
+        ("Prime price", detail => detail.Prime?.Price),
+        ("Prime original price", detail => detail.Prime?.OriginalPrice),
+        ("Prime discount", detail => detail.Prime?.Discount),
+        ("Prime only", detail => detail.Prime is { } prime
+            ? (prime.Only ? "Yes" : "No")
+            : null),
         ("Coupon", detail => detail.Coupon),
         ("Rating", detail => detail.Rating),
         ("Rating average", detail => detail.RatingDetails?.Average is { } average
@@ -277,6 +283,25 @@ public static class CompareTabsRenderer
     private static readonly Style BorderStyle = new(Color.Cyan);
     private static readonly Style LowPriceStyle = new(Color.Green);
 
+    private static string PrimeCell(ProductDetail? detail)
+    {
+        var prime = detail?.Prime;
+        if (prime is null || string.IsNullOrWhiteSpace(prime.Price))
+        {
+            return "-";
+        }
+        var value = prime.Price;
+        if (!string.IsNullOrWhiteSpace(prime.Discount))
+        {
+            value += $" {prime.Discount}";
+        }
+        if (prime.Only)
+        {
+            value += " (only)";
+        }
+        return value;
+    }
+
     public static void RenderTable(
         IAnsiConsole console,
         IReadOnlyList<CompareShowItem> items)
@@ -290,6 +315,7 @@ public static class CompareTabsRenderer
             !string.IsNullOrWhiteSpace(item.Detail?.OriginalPrice));
         var hasDiscount = items.Any(item =>
             !string.IsNullOrWhiteSpace(item.Detail?.Discount));
+        var hasPrime = items.Any(item => item.Detail?.Prime is not null);
         var hasCoupon = items.Any(item =>
             !string.IsNullOrWhiteSpace(item.Detail?.Coupon));
 
@@ -336,6 +362,14 @@ public static class CompareTabsRenderer
             table.AddColumn(new TableColumn(new Text("Disc.", new Style(Color.Magenta)))
             {
                 Width = 6,
+                NoWrap = true,
+            });
+        }
+        if (hasPrime)
+        {
+            table.AddColumn(new TableColumn(new Text("Prime", new Style(Color.Blue)))
+            {
+                Width = 20,
                 NoWrap = true,
             });
         }
@@ -453,6 +487,10 @@ public static class CompareTabsRenderer
                         ? discount
                         : "-",
                     new Style(Color.Magenta)));
+            }
+            if (hasPrime)
+            {
+                row.Add(new Text(PrimeCell(detail), new Style(Color.Blue)));
             }
             if (hasCoupon)
             {

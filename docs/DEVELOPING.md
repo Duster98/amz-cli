@@ -1116,6 +1116,21 @@ read with the same logic (numeric table or disclosure only). US sales
 taxes, however, are not on the product page and remain available only
 at checkout.
 
+### Prime prices
+
+When Amazon shows a price reserved for Prime customers, the main `price` is
+the standard offer and `prime` holds the Prime price:
+
+- `prime.price`: the Prime price;
+- `prime.original_price`: the reference price for the Prime discount;
+- `prime.discount`: the Prime discount (for example `-13%`);
+- `prime.only`: true when the page has no regular offer.
+
+The Web UI shows the Prime price separately and marks a Prime-only offer. The
+comparison uses the standard price for the best-price label and excludes
+Prime-only products. Monitors record `prime_price`, `prime_price_amount`, and
+`prime_only`.
+
 ### Discounts, coupons, and deal badges
 
 `details` exposes:

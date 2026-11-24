@@ -43,6 +43,25 @@ public static class DetailTableRenderer
             ("Availability", detail.Availability),
         };
 
+        if (detail.Prime is { } prime
+            && !string.IsNullOrWhiteSpace(prime.Price))
+        {
+            var primeValue = prime.Price;
+            if (!string.IsNullOrWhiteSpace(prime.Discount))
+            {
+                primeValue += $" ({prime.Discount})";
+            }
+            if (prime.Only)
+            {
+                primeValue += " · Prime only";
+            }
+            var discountIndex = rows.FindIndex(row =>
+                string.Equals(row.Field, "Discount", StringComparison.Ordinal));
+            rows.Insert(
+                discountIndex >= 0 ? discountIndex + 1 : rows.Count,
+                ("Prime", primeValue));
+        }
+
         if (!string.IsNullOrEmpty(detail.ModelName))
         {
             var brandIndex = rows.FindIndex(row =>

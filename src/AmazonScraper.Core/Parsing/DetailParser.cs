@@ -93,43 +93,108 @@ public sealed partial class DetailParser(IMarketplaceProfile marketplace)
             brand = brand["Visit the ".Length..^" Store".Length].Trim();
         }
 
-        var (priceHtml, mobilePriceBlock) = FindPriceBlock(html);
-        var price = ExtractPrice(priceHtml, mobilePriceBlock) ?? string.Empty;
+        var (displayHtml, displayMobile) = FindPriceBlock(html);
+        ReadPriceDetails(
+            displayHtml,
+            displayMobile,
+            out var displayPrice,
+            out var displayOriginalPrice,
+            out var displayDiscount);
 
-        var originalPrice = string.Empty;
-        foreach (var originalMatch in new[]
-                 {
-                     marketplace.Patterns.DetailOriginalPrice.Match(priceHtml),
-                     AmazonPatterns.DetailOriginalPriceFallback.Match(priceHtml),
-                 })
+        var buybox = FindBuyboxPriceBlocks(html);
+        string price;
+        string originalPrice;
+        string discount;
+        PrimePricing? prime = null;
+
+        if (buybox.Standard is not null)
         {
-            if (!originalMatch.Success)
+            ReadPriceDetails(
+                buybox.Standard,
+                false,
+                out price,
+                out originalPrice,
+                out discount);
+            if (string.IsNullOrWhiteSpace(price) && buybox.Prime is not null)
             {
-                continue;
+                ReadPriceDetails(
+                    buybox.Prime,
+                    false,
+                    out price,
+                    out originalPrice,
+                    out discount);
+                if (!string.IsNullOrWhiteSpace(price))
+                {
+                    prime = new PrimePricing
+                    {
+                        Price = price,
+                        OriginalPrice = originalPrice,
+                        Discount = discount,
+                        Only = true,
+                    };
+                }
             }
-
-            var candidate = marketplace.Format.OriginalPrice(
-                originalMatch.Groups[1].Value);
-            if (IsHigherThanCurrent(candidate, price, marketplace.Format))
+            else if (buybox.Prime is not null)
             {
-                originalPrice = candidate;
-                break;
+                ReadPriceDetails(
+                    buybox.Prime,
+                    false,
+                    out var primePrice,
+                    out var primeOriginalPrice,
+                    out var primeDiscount);
+                if (!string.IsNullOrWhiteSpace(primePrice))
+                {
+                    if (displayPrice == primePrice)
+                    {
+                        primeOriginalPrice = displayOriginalPrice;
+                        primeDiscount = displayDiscount;
+                    }
+                    prime = new PrimePricing
+                    {
+                        Price = primePrice,
+                        OriginalPrice = primeOriginalPrice,
+                        Discount = primeDiscount,
+                        Only = false,
+                    };
+                }
             }
         }
-
-        var discount = string.Empty;
-        var discountMatch = AmazonPatterns.Discount.Match(priceHtml);
-        if (discountMatch.Success)
+        else if (buybox.Prime is not null)
         {
-            discount = $"-{discountMatch.Groups[1].Value}%";
+            ReadPriceDetails(
+                buybox.Prime,
+                false,
+                out price,
+                out originalPrice,
+                out discount);
+            if (!string.IsNullOrWhiteSpace(price))
+            {
+                if (displayPrice == price)
+                {
+                    originalPrice = displayOriginalPrice;
+                    discount = displayDiscount;
+                }
+                prime = new PrimePricing
+                {
+                    Price = price,
+                    OriginalPrice = originalPrice,
+                    Discount = discount,
+                    Only = true,
+                };
+            }
         }
-        else if (TryComputeDiscount(
-                     price,
-                     originalPrice,
-                     marketplace.Format,
-                     out var computedDiscount))
+        else
         {
-            discount = computedDiscount;
+            price = displayPrice;
+            originalPrice = displayOriginalPrice;
+            discount = displayDiscount;
+        }
+
+        if (string.IsNullOrWhiteSpace(price))
+        {
+            price = displayPrice;
+            originalPrice = displayOriginalPrice;
+            discount = displayDiscount;
         }
 
         var rating = string.Empty;
@@ -425,6 +490,7 @@ public sealed partial class DetailParser(IMarketplaceProfile marketplace)
             Price = price,
             OriginalPrice = originalPrice,
             Discount = discount,
+            Prime = prime,
             Rating = rating,
             Reviews = reviews,
             Seller = seller,
@@ -639,6 +705,73 @@ public sealed partial class DetailParser(IMarketplaceProfile marketplace)
             @"[?&](?:seller|smid)=([A-Za-z0-9]+)",
             RegexOptions.IgnoreCase);
         return seller.Success ? seller.Groups[1].Value : string.Empty;
+    }
+
+    private static (string? Standard, string? Prime) FindBuyboxPriceBlocks(
+        string html)
+    {
+        var buybox = HtmlBlockExtractor.ExtractDivById(html, "desktop_buybox");
+        var scope = string.IsNullOrEmpty(buybox) ? html : buybox;
+        var prime = HtmlBlockExtractor.ExtractDivById(
+            scope,
+            "primeSavingsUpsellAccordionRow");
+        var standard = HtmlBlockExtractor.ExtractDivById(
+            scope,
+            "newAccordionRow_1");
+        if (string.IsNullOrEmpty(standard))
+        {
+            standard = HtmlBlockExtractor.ExtractDivById(scope, "newAccordionRow");
+        }
+
+        return (
+            string.IsNullOrEmpty(standard) ? null : standard,
+            string.IsNullOrEmpty(prime) ? null : prime);
+    }
+
+    private void ReadPriceDetails(
+        string html,
+        bool mobilePriceBlock,
+        out string price,
+        out string originalPrice,
+        out string discount)
+    {
+        price = ExtractPrice(html, mobilePriceBlock) ?? string.Empty;
+
+        originalPrice = string.Empty;
+        foreach (var originalMatch in new[]
+                 {
+                     marketplace.Patterns.DetailOriginalPrice.Match(html),
+                     AmazonPatterns.DetailOriginalPriceFallback.Match(html),
+                 })
+        {
+            if (!originalMatch.Success)
+            {
+                continue;
+            }
+
+            var candidate = marketplace.Format.OriginalPrice(
+                originalMatch.Groups[1].Value);
+            if (IsHigherThanCurrent(candidate, price, marketplace.Format))
+            {
+                originalPrice = candidate;
+                break;
+            }
+        }
+
+        discount = string.Empty;
+        var discountMatch = AmazonPatterns.Discount.Match(html);
+        if (discountMatch.Success)
+        {
+            discount = $"-{discountMatch.Groups[1].Value}%";
+        }
+        else if (TryComputeDiscount(
+                     price,
+                     originalPrice,
+                     marketplace.Format,
+                     out var computedDiscount))
+        {
+            discount = computedDiscount;
+        }
     }
 
     private (string Html, bool MobilePriceBlock) FindPriceBlock(string html)
