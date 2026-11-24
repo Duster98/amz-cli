@@ -1,3 +1,14 @@
+# AMZ CLI 3.2.4
+
+This release includes all 3.2.3 features.
+
+## Prime price position
+
+- In the Web comparison and product detail, the Prime price line now appears
+  immediately under the main price, before the "Lowest price" and other
+  badges. This keeps the Prime-only price associated with the price it
+  refers to.
+
 # AMZ CLI 3.2.3
 
 This release includes all 3.2.2 features and fixes Prime-only pricing.
